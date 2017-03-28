@@ -39,24 +39,21 @@ fi
 
 export CC="$(xcrun -sdk iphoneos -find clang)"
 export CPP="$CC -E"
-export CFLAGS="-arch ${target} -isysroot $PLATFORMPATH/$platform.platform/Developer/SDKs/$platform$SDKVERSION.sdk -miphoneos-version-min=$SDKVERSION"
+export CFLAGS="-arch ${target} -isysroot $PLATFORMPATH/$platform.platform/Developer/SDKs/$platform$SDKVERSION.sdk -miphoneos-version-min=$SDKVERSION -fembed-bitcode"
 export AR=$(xcrun -sdk iphoneos -find ar)
 export RANLIB=$(xcrun -sdk iphoneos -find ranlib)
-export CPPFLAGS="-arch ${target}  -isysroot $PLATFORMPATH/$platform.platform/Developer/SDKs/$platform$SDKVERSION.sdk -miphoneos-version-min=$SDKVERSION"
-
-if [[ $platform == "iPhoneOS" ]]; then
-export LDFLAGS="-arch ${target} -isysroot $PLATFORMPATH/$platform.platform/Developer/SDKs/$platform$SDKVERSION.sdk -bitcode_bundle"
-else
+export CPPFLAGS="-arch ${target}  -isysroot $PLATFORMPATH/$platform.platform/Developer/SDKs/$platform$SDKVERSION.sdk -miphoneos-version-min=$SDKVERSION -fembed-bitcode"
 export LDFLAGS="-arch ${target} -isysroot $PLATFORMPATH/$platform.platform/Developer/SDKs/$platform$SDKVERSION.sdk"
-fi
+
+echo "BUILD target=$target hosttaget=$hosttarget platform=$platform"
 
 mkdir -p $pwd/output/$target
 
-./configure --prefix="$pwd/output/$target" --disable-shared --disable-sqlite --host=$hosttarget-apple-darwin
+./configure --prefix="$pwd/output/$target" --disable-shared --host=$hosttarget-apple-darwin
 
-make clean -j 4
+make clean > /dev/null
 make -j 4
-make install -j 4
+make install 
 }
 
 findLatestSDKVersion iPhoneOS
