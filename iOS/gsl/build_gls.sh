@@ -2,7 +2,7 @@
 
 PLATFORMPATH="/Applications/Xcode.app/Contents/Developer/Platforms"
 TOOLSPATH="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin"
-export IPHONEOS_DEPLOYMENT_TARGET="9.0"
+export IPHONEOS_DEPLOYMENT_TARGET="9.1"
 pwd=`pwd`
 
 findLatestSDKVersion()
@@ -21,7 +21,7 @@ sdk=${arr[$count-1]:${#1}}
 num=`expr ${#sdk}-4`
 SDKVERSION=${sdk:0:$num}
 else
-SDKVERSION="8.0"
+SDKVERSION="9.1"
 fi
 }
 
@@ -39,10 +39,10 @@ fi
 
 export CC="$(xcrun -sdk iphoneos -find clang)"
 export CPP="$CC -E"
-export CFLAGS="-arch ${target} -isysroot $PLATFORMPATH/$platform.platform/Developer/SDKs/$platform$SDKVERSION.sdk -miphoneos-version-min=$SDKVERSION -fembed-bitcode"
+export CFLAGS="-arch ${target} -isysroot $PLATFORMPATH/$platform.platform/Developer/SDKs/$platform$SDKVERSION.sdk -miphoneos-version-min=$IPHONEOS_DEPLOYMENT_TARGET -fembed-bitcode"
 export AR=$(xcrun -sdk iphoneos -find ar)
 export RANLIB=$(xcrun -sdk iphoneos -find ranlib)
-export CPPFLAGS="-arch ${target}  -isysroot $PLATFORMPATH/$platform.platform/Developer/SDKs/$platform$SDKVERSION.sdk -miphoneos-version-min=$SDKVERSION -fembed-bitcode"
+export CPPFLAGS="-arch ${target}  -isysroot $PLATFORMPATH/$platform.platform/Developer/SDKs/$platform$SDKVERSION.sdk -miphoneos-version-min=$IPHONEOS_DEPLOYMENT_TARGET -fembed-bitcode"
 export LDFLAGS="-arch ${target} -isysroot $PLATFORMPATH/$platform.platform/Developer/SDKs/$platform$SDKVERSION.sdk"
 
 echo "BUILD target=$target hosttaget=$hosttarget platform=$platform"
